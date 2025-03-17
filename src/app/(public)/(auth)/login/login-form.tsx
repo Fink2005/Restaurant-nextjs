@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginMutation } from "@/queries/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { handleErrorApi } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const form = useForm<LoginBodyType>({
@@ -25,6 +26,7 @@ export default function LoginForm() {
       password: "",
     },
   });
+  const router = useRouter();
   const loginMutation = useLoginMutation();
 
   const onSubmit = async (data: LoginBodyType) => {
@@ -34,6 +36,7 @@ export default function LoginForm() {
       toast({
         title: result.payload.message,
       });
+      router.push("/manage/dashboard");
     } catch (error: any) {
       console.log({ error }, "form error", form.setError);
       handleErrorApi({
